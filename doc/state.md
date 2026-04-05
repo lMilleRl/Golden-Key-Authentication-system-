@@ -39,7 +39,6 @@ state "открыта" as Opened
 
 [*] --> Hidden
 
-' Все воздействия идут в точку принятия решения
 Hidden --> Discovered : обнаружить()
 Discovered --> Opened : открыть(Key) [key valid]
 
