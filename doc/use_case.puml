@@ -1,35 +1,31 @@
 @startuml
 left to right direction
 
-actor "Дед" as Grandpa
-actor "Баба" as Grandma
-actor "Мышь" as Mouse
-actor "Курочка" as Chicken
+actor "Буратино" as Puppet
+actor "Карабас-Барабас" as Karabas
 
-package "Управление золотыми активами" {
-  usecase "Бить золотое яйцо" as Hit
-  usecase "Разбить (случайно)" as BreakByTail
-  usecase "Плакать" as Cry
-  usecase "Утешить (Обещать простое)" as Comfort
-  usecase "Снести простое яйцо" as SpawnSimple
+package "Система аутентификации" {
+  usecase "Убежать от погони" as RunAway
+  usecase "Найти ключ" as FindKey
+  usecase "Найти дверь" as FindDoor
+  usecase "Открыть дверь" as OpenDoor
+  usecase "Скрыть ключ от Карабаса" as HideKey
+  usecase "Перехватить ключ" as InterceptKey
+  usecase "Догнать Буротино" as CatchUp
 }
 
-' Дед и Баба бьют яйцо (действие)
-Grandpa --> Hit
-Grandma --> Hit
+' Основные независимые действия Буротино
+Puppet --> OpenDoor
 
-' Мышь разбивает (действие)
-Mouse --> BreakByTail
-
-' Дед и Баба ПЛАЧУТ (линии ведут к ним)
-Grandpa --> Cry
-Grandma --> Cry
-
-' Курочка УТЕШАЕТ и СНОСИТ (линии к ней)
-Chicken --> Comfort
-Chicken --> SpawnSimple
+' Основные независимые действия Карабаса-Барабаса
+Karabas --> InterceptKey
 
 ' Зависимости внутри системы
-Cry <.. Comfort : <<extend>> : если плачут
-Comfort ..> SpawnSimple : <<include>>
+OpenDoor <.. FindDoor : <<include>>
+OpenDoor <.. FindKey : <<include>>
+FindKey <.. RunAway : <<extend>> : если Карабас-Барабас погонится
+FindKey <.. HideKey : <<extend>> : чтобы Карабас-Барабас не забрал ключ
+
+InterceptKey <.. FindKey : <<include>>
+CatchUp <.. InterceptKey : <<include>>
 @enduml
