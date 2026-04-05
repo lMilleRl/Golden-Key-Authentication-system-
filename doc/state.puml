@@ -1,36 +1,16 @@
 @startuml
-skinparam state {
-  BackgroundColor<<Broken>> #pink
-}
+title Диаграмма состояний: Дверь
 
-title Жизненный цикл Золотого Яйца (прочность 100)
+state "скрыта" as Hidden
+state "найдена" as Discovered
+state "открыта" as Opened
 
-[*] --> Целое : <<create>>
 
-state "Целое яйцо" as Целое
-state "Разбитое яйцо" as Разбитое <<Broken>>
-state c <<choice>> 
+[*] --> Hidden
 
 ' Все воздействия идут в точку принятия решения
-Целое --> c : воздействовать(сила)
+Hidden --> Discovered : обнаружить()
+Discovered --> Opened : открыть(Key) [key valid]
 
-' Логика распределения потоков
-c --> Целое : [сила < 100] \n (Дед, Баба)
-c --> Разбитое : [сила >= 100] \n (Мышь)
-
-' Финал
-Разбитое --> [*] : <<destroy>>
-
-note left of c
-  **Точка выбора (Choice)**
-  Проверяет условие:
-  если сила < 100, 
-  возвращает в "Целое"
-end note
-
-note right of Разбитое
-  Состояние изменилось, 
-  так как условие 
-  выполнено
-end note
+Opened --> [*]
 @enduml
